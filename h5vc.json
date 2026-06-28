@@ -9,21 +9,21 @@
       "files": [
         {
           "fileType": "anndata.h5ad",
-          "url": "https://zenodo.org/records/20988977/files/own_data.h5ad",
+          "url": "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.h5ad",
           "options": {
             "obsSets": [
               {
                 "name": "own_data.reference.json",
-                "path": "https://zenodo.org/records/20988977/files/own_data.reference.json"
+                "path": "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.reference.json"
               }
             ],
             "obsLabels": [
               {
-                "path": "https://zenodo.org/records/20988977/files/own_data.reference.json",
+                "path": "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.reference.json",
                 "obsLabelsType": "own_data.reference.json"
               }
             ],
-            "refSpecUrl": "https://zenodo.org/records/20988977/files/own_data.reference.json"
+            "refSpecUrl": "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.reference.json"
           }
         }
       ]
