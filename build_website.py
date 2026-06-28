@@ -1,73 +1,82 @@
 #!/usr/bin/env python3
 """
-build_website.py — 一键构建: R 数据 → zarr → Vitessce → 静态网站
+build_website.py — 生成 h5vc.json 配置 (remote mode)
 """
-
+import json
 import subprocess
-import os
 from pathlib import Path
 
-PROJECT = Path("/home/data/Projects/2026/Ran_SCI")
-WEBSITE = PROJECT / "website"
-BUILD = WEBSITE / "build"
-DATA = WEBSITE / "data"
 PYTHON = "/home/bio/miniconda3/envs/vitessce/bin/python"
+BUILD = Path("build")
+BUILD.mkdir(parents=True, exist_ok=True)
 
+# Generate h5vc.json using vitessce Python SDK
+config_code = '''
+import json
+from vitessce import VitessceConfig, ViewType, AnnDataWrapper
 
-def run_step(name, cmd, cwd=None):
-    print(f"\n{'=' * 60}")
-    print(f"Step: {name}")
-    print(f"{'=' * 60}")
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd)
-    if result.returncode != 0:
-        print(f"ERROR: {result.stderr}")
-        raise RuntimeError(f"Failed: {name}")
-    if result.stdout:
-        print(result.stdout)
-    print(f"✓ {name}")
+vc = VitessceConfig(
+    name="Mouse Spinal Cord Injury snRNA-seq atlas",
+    description="Single-nucleus RNA-seq atlas of mouse spinal cord injury. 48,709 nuclei from 4 samples: WT female/male x IFNAR-KO female/male. Harmony-integrated, 7 cell types.",
+    schema_version="1.0.0",
+)
 
+dataset = vc.add_dataset(name="SCI snRNA-seq (WT x IFNAR-KO)", uid="own_data")
 
-def main():
-    # Step 1: 确保 zarr 数据已转换
-    zarr_file = DATA / "own" / "own_data.h5ad.zarr"
-    if not zarr_file.exists():
-        print("Zarr file not found. Running data conversion...")
-        run_step("Convert own data to zarr",
-                 f"{PYTHON} src/data_prep/convert_own_data.py",
-                 cwd=WEBSITE)
-    else:
-        size_mb = sum(f.stat().st_size for f in zarr_file.rglob("*") if f.is_file()) / 1e6
-        print(f"Zarr file exists: {zarr_file} ({size_mb:.0f} MB)")
+h5ad_url = "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.h5ad"
+ref_url = "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.reference.json"
 
-    # Step 2: 创建 build 目录并链接数据
-    BUILD.mkdir(parents=True, exist_ok=True)
-    data_link = BUILD / "data"
-    if data_link.exists() or data_link.is_symlink():
-        data_link.unlink()
-    os.symlink("../data", str(data_link))
-    print(f"Linked data/ -> build/data/")
+wrapper = AnnDataWrapper(
+    adata_url=h5ad_url,
+    ref_url=ref_url,
+    obs_set_paths=[ref_url],
+    obs_labels_paths=[ref_url],
+)
+dataset.add_object(wrapper)
 
-    # Step 3: 生成 Vitessce 配置
-    config_py = WEBSITE / "src/config/build_config.py"
-    if config_py.exists():
-        run_step("Build Vitessce config (remote mode)",
-                 f"{PYTHON} src/config/build_config.py remote",
-                 cwd=WEBSITE)
+# Views
+vc.add_view(ViewType.SCATTERPLOT, dataset=dataset, x=0, y=0, w=3, h=3, mapping="cell_type_auto")
+vc.add_view(ViewType.SCATTERPLOT, dataset=dataset, x=3, y=0, w=3, h=3, mapping="gene_expression")
+vc.add_view(ViewType.CELL_SET_SIZES, dataset=dataset, x=0, y=3, w=2, h=2)
+vc.add_view(ViewType.CELL_SET_EXPRESSION, dataset=dataset, x=2, y=3, w=2, h=2)
+vc.add_view(ViewType.HEATMAP, dataset=dataset, x=4, y=3, w=2, h=2)
+vc.add_view(ViewType.STATUS, dataset=dataset, x=0, y=5, w=6, h=1)
+vc.add_view(ViewType.DESCRIPTION, dataset=dataset, x=0, y=6, w=6, h=2, props={
+    "title": "Mouse Spinal Cord Injury snRNA-seq atlas",
+    "markdown": """## Overview
+Single-nucleus RNA-seq analysis of spinal cord injury (SCI) in mice.
 
-    # Step 4: 复制静态文件到 build/
-    run_step("Copy static files",
-             f"cp -r {WEBSITE}/src/static/* {BUILD}/")
+### Samples
+| Condition | Genotype | Sex |
+|-----------|----------|-----|
+| WT_F | C57BL/6 (WT) | Female |
+| WT_M | C57BL/6 (WT) | Male |
+| KO_F | IFNAR Knockout | Female |
+| KO_M | IFNAR Knockout | Male |
 
-    # Step 5: 生成 requirements.txt
-    req = WEBSITE / "requirements.txt"
-    req.write_text("vitessce==3.4.0\nscanpy\nanndata\nnumpy\npandas\nh5py\nzarr\nscipy\n")
+### Data
+- **48,709 nuclei** after QC (DecontX + scDblFinder)
+- **21,839 genes**
+- **7 cell types**: Neuron, Astrocyte, Oligodendrocyte, OPC, Microglia, Endothelial, Pericyte
+- **Harmony** integration
+- **14 clusters** (resolution = 0.4)
 
-    print(f"\n{'=' * 60}")
-    print(f"Build complete!")
-    print(f"  Output: {BUILD}")
-    print(f"  Preview: python {WEBSITE}/preview.py")
-    print(f"{'=' * 60}")
+### m1A Genes
+- **Writers**: Trmt10c, Trmt6, Trmt61a
+- **Erasers**: Alkbh1, Alkbh3, Fto
+- **Readers**: Ythdc1, Ythdf1, Ythdf2, Ythdf3
+""",
+})
 
+config_dict = vc.to_dict(base_url=".")
+with open("h5vc.json", "w") as f:
+    json.dump(config_dict, f, indent=2)
+print("h5vc.json generated")
+'''
 
-if __name__ == "__main__":
-    main()
+result = subprocess.run([PYTHON, "-c", config_code], capture_output=True, text=True)
+if result.returncode != 0:
+    print(f"ERROR: {result.stderr}")
+    raise RuntimeError("Failed to build config")
+print(result.stdout)
+print("Build complete!")

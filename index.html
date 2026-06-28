@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ran_SCI — Mouse Spinal Cord Injury snRNA-seq</title>
+  <title>Mouse Spinal Cord Injury snRNA-seq atlas</title>
   <meta name="description" content="Interactive visualization of single-nucleus RNA-seq data from mouse spinal cord injury (SCI) study.">
 
   <!-- Custom Styles -->
@@ -17,7 +17,7 @@
 
   <!-- Header -->
   <header class="site-header">
-    <h1>🧬 Ran_SCI — Mouse Spinal Cord Injury snRNA-seq</h1>
+    <h1>Mouse Spinal Cord Injury snRNA-seq atlas</h1>
     <div class="subtitle">Single-nucleus transcriptomics reveals m1A RNA modification dynamics after spinal cord injury</div>
     <div class="meta">
       48,709 nuclei · 4 samples (WT × IFNAR-KO, Female × Male) · Harmony integrated · 7 cell types
@@ -47,10 +47,10 @@
       <div class="sidebar-section">
         <div class="sidebar-title">Actions</div>
         <button onclick="exportUMAP()" class="gene-preset-btn" style="width:100%; margin-bottom:0.5rem;">
-          📸 Export UMAP
+          Export UMAP
         </button>
         <button onclick="generateShareLink()" class="gene-preset-btn" style="width:100%;">
-          🔗 Share View
+          Share View
         </button>
       </div>
     </aside>
@@ -96,7 +96,7 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Scripts (loaded before inline code) -->
   <script src="js/gene-search.js"></script>
   <script src="js/dataset-tabs.js"></script>
   <script src="js/custom-views.js"></script>
@@ -153,31 +153,20 @@
       const iframe = document.getElementById("vitessce-iframe");
       const loading = document.getElementById("loading-msg");
 
-      // Read config URL from localStorage (set by preview.py)
-      const vitessceUrl = localStorage.getItem("vitessce_url");
-      if (vitessceUrl) {
-        iframe.src = vitessceUrl;
-        iframe.onload = () => {
-          loading.style.display = "none";
-        };
-      } else {
-        // Default: load h5vc.json from same directory
-        // This requires a local server with CORS support
-        iframe.src = "https://vitessce.io/#/?url=" + encodeURIComponent(
-          window.location.origin + window.location.pathname + "h5vc.json"
-        );
-        iframe.onload = () => {
-          loading.style.display = "none";
-        };
-        // Timeout fallback
-        setTimeout(() => { loading.style.display = "none"; }, 5000);
-      }
+      // Load h5vc.json from same directory via vitessce.io
+      const configUrl = window.location.origin + window.location.pathname + "h5vc.json";
+      iframe.src = "https://vitessce.io/#/?url=" + encodeURIComponent(configUrl);
+      iframe.onload = () => {
+        loading.style.display = "none";
+      };
+      setTimeout(() => { loading.style.display = "none"; }, 8000);
     }
 
+    // ─── Init ────────────────────────────────────────
     document.addEventListener("DOMContentLoaded", () => {
       createGeneSearch();
       loadVitessce();
-      restoreFromHash();
+      if (typeof restoreFromHash === "function") restoreFromHash();
     });
   </script>
 </body>

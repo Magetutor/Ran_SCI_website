@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "name": "Ran_SCI \u2014 Mouse Spinal Cord Injury snRNA-seq",
-  "description": "Single-nucleus RNA-seq of mouse spinal cord injury. 48,709 nuclei from 4 samples: WT female/male x IFNAR-KO female/male. Harmony-integrated, 7 cell types.",
+  "name": "Mouse Spinal Cord Injury snRNA-seq atlas",
+  "description": "Single-nucleus RNA-seq atlas of mouse spinal cord injury. 48,709 nuclei from 4 samples: WT female/male x IFNAR-KO female/male. Harmony-integrated, 7 cell types.",
   "datasets": [
     {
       "uid": "own_data",
@@ -34,8 +34,8 @@
       "A": "own_data"
     },
     "embeddingType": {
-      "A": "cell_type_auto",
-      "B": "gene_expression"
+      "A": "X_umap",
+      "B": "X_umap"
     }
   },
   "layout": [
@@ -111,8 +111,8 @@
       "w": 6,
       "h": 2,
       "props": {
-        "title": "Ran_SCI: Mouse Spinal Cord Injury snRNA-seq",
-        "markdown": "## Overview\nSingle-nucleus RNA-seq analysis of spinal cord injury (SCI) in mice,\ninvestigating m1A RNA modification regulators in WT vs IFNAR-KO backgrounds.\n\n### Samples\n| Condition | Genotype | Sex |\n|-----------|----------|-----|\n| WT_F | C57BL/6 (WT) | Female |\n| WT_M | C57BL/6 (WT) | Male |\n| KO_F | IFNAR Knockout | Female |\n| KO_M | IFNAR Knockout | Male |\n\n### Data\n- **48,709 nuclei** after QC (DecontX + scDblFinder)\n- **21,839 genes**\n- **7 cell types**: Neuron, Astrocyte, Oligodendrocyte, OPC, Microglia, Endothelial, Pericyte\n- **Harmony** integration\n- **14 clusters** (resolution = 0.4)\n\n### m1A Genes\n- **Writers**: Trmt10c, Trmt6, Trmt61a\n- **Erasers**: Alkbh1, Alkbh3, Fto\n- **Readers**: Ythdc1, Ythdf1, Ythdf2, Ythdf3\n"
+        "title": "Mouse Spinal Cord Injury snRNA-seq atlas",
+        "markdown": "## Overview\nSingle-nucleus RNA-seq analysis of spinal cord injury (SCI) in mice.\n\n### Samples\n| Condition | Genotype | Sex |\n|-----------|----------|-----|\n| WT_F | C57BL/6 (WT) | Female |\n| WT_M | C57BL/6 (WT) | Male |\n| KO_F | IFNAR Knockout | Female |\n| KO_M | IFNAR Knockout | Male |\n\n### Data\n- **48,709 nuclei** after QC (DecontX + scDblFinder)\n- **21,839 genes**\n- **7 cell types**: Neuron, Astrocyte, Oligodendrocyte, OPC, Microglia, Endothelial, Pericyte\n- **Harmony** integration\n- **14 clusters** (resolution = 0.4)\n\n### m1A Genes\n- **Writers**: Trmt10c, Trmt6, Trmt61a\n- **Erasers**: Alkbh1, Alkbh3, Fto\n- **Readers**: Ythdc1, Ythdf1, Ythdf2, Ythdf3\n"
       }
     }
   ],
