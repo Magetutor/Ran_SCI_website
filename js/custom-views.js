@@ -71,7 +71,8 @@ function restoreFromHash() {
   try {
     const state = JSON.parse(atob(hash));
     if (state.genes) {
-      document.getElementById("geneSearch")?.value = state.genes;
+      const searchEl = document.getElementById("geneSearch");
+      if (searchEl) searchEl.value = state.genes;
       dispatchGeneSelect(state.genes.split(",").map(g => g.trim()));
     }
   } catch (e) {
