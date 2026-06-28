@@ -1,4 +1,4 @@
-# Ran_SCI Website — 脊髓损伤单细胞数据交互式可视化
+# SCI Website — 脊髓损伤单细胞数据交互式可视化
 
 Interactive single-cell data visualization website for the Ran_SCI project.
 
