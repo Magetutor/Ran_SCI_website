@@ -56,26 +56,7 @@
       "w": 2,
       "h": 2
     },
-    {
-      "component": "cellSetExpression",
-      "coordinationScopes": {
-        "dataset": "A"
-      },
-      "x": 2,
-      "y": 3,
-      "w": 2,
-      "h": 2
-    },
-    {
-      "component": "heatmap",
-      "coordinationScopes": {
-        "dataset": "A"
-      },
-      "x": 4,
-      "y": 3,
-      "w": 2,
-      "h": 2
-    },
+
     {
       "component": "status",
       "coordinationScopes": {
