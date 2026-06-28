@@ -23,12 +23,12 @@ vc = VitessceConfig(
 
 dataset = vc.add_dataset(name="SCI snRNA-seq (WT x IFNAR-KO)", uid="own_data")
 
-h5ad_url = "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.h5ad"
-ref_url = "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.reference.json"
+# Zarr store on raw.githubusercontent.com (CORS-enabled)
+zarr_url = "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.h5ad.zarr/"
+ref_url = "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.reference.json"
 
 wrapper = AnnDataWrapper(
-    adata_url=h5ad_url,
-    ref_url=ref_url,
+    adata_url=zarr_url,
     obs_set_paths=[ref_url],
     obs_labels_paths=[ref_url],
 )

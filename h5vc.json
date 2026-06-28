@@ -8,22 +8,21 @@
       "name": "SCI snRNA-seq (WT x IFNAR-KO)",
       "files": [
         {
-          "fileType": "anndata.h5ad",
-          "url": "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.h5ad",
+          "fileType": "anndata.zarr",
+          "url": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.h5ad.zarr/",
           "options": {
             "obsSets": [
               {
                 "name": "own_data.reference.json",
-                "path": "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.reference.json"
+                "path": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.reference.json"
               }
             ],
             "obsLabels": [
               {
-                "path": "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.reference.json",
+                "path": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.reference.json",
                 "obsLabelsType": "own_data.reference.json"
               }
-            ],
-            "refSpecUrl": "https://huggingface.co/datasets/Magetutor/sci-snrnaseq-atlas/resolve/main/own_data.reference.json"
+            ]
           }
         }
       ]
