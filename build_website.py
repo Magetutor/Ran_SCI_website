@@ -34,9 +34,9 @@ wrapper = AnnDataWrapper(
 )
 dataset.add_object(wrapper)
 
-# Views
-vc.add_view(ViewType.SCATTERPLOT, dataset=dataset, x=0, y=0, w=3, h=3, mapping="cell_type_auto")
-vc.add_view(ViewType.SCATTERPLOT, dataset=dataset, x=3, y=0, w=3, h=3, mapping="gene_expression")
+# Views — mapping must be the obsm key name (e.g. "X_umap"), NOT cell type or gene name
+vc.add_view(ViewType.SCATTERPLOT, dataset=dataset, x=0, y=0, w=3, h=3, mapping="X_umap")
+vc.add_view(ViewType.SCATTERPLOT, dataset=dataset, x=3, y=0, w=3, h=3, mapping="X_umap")
 vc.add_view(ViewType.CELL_SET_SIZES, dataset=dataset, x=0, y=3, w=2, h=2)
 vc.add_view(ViewType.CELL_SET_EXPRESSION, dataset=dataset, x=2, y=3, w=2, h=2)
 vc.add_view(ViewType.HEATMAP, dataset=dataset, x=4, y=3, w=2, h=2)

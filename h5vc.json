@@ -34,8 +34,8 @@
       "A": "own_data"
     },
     "embeddingType": {
-      "A": "cell_type_auto",
-      "B": "gene_expression"
+      "A": "X_umap",
+      "B": "X_umap"
     }
   },
   "layout": [
