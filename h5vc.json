@@ -9,21 +9,7 @@
       "files": [
         {
           "fileType": "anndata.zarr",
-          "url": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.zarr/",
-          "options": {
-            "obsSets": [
-              {
-                "name": "own_data.reference.json",
-                "path": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.reference.json"
-              }
-            ],
-            "obsLabels": [
-              {
-                "path": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.reference.json",
-                "obsLabelsType": "own_data.reference.json"
-              }
-            ]
-          }
+          "url": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.zarr/"
         }
       ]
     }
