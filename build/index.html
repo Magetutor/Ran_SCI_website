@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ran_SCI — Mouse Spinal Cord Injury snRNA-seq</title>
+  <meta name="description" content="Interactive visualization of single-nucleus RNA-seq data from mouse spinal cord injury (SCI) study.">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/vitessce-overrides.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.ico">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <h1>🧬 Ran_SCI — Mouse Spinal Cord Injury snRNA-seq</h1>
+    <div class="subtitle">Single-nucleus transcriptomics reveals m1A RNA modification dynamics after spinal cord injury</div>
+    <div class="meta">
+      48,709 nuclei · 4 samples (WT × IFNAR-KO, Female × Male) · Harmony integrated · 7 cell types
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="main-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Cell Types</div>
+        <div id="cellTypeLegend"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Conditions</div>
+        <div id="conditionLegend"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">m1A Genes</div>
+        <div id="m1aLegend"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Actions</div>
+        <button onclick="exportUMAP()" class="gene-preset-btn" style="width:100%; margin-bottom:0.5rem;">
+          📸 Export UMAP
+        </button>
+        <button onclick="generateShareLink()" class="gene-preset-btn" style="width:100%;">
+          🔗 Share View
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content: Vitessce iframe -->
+    <main class="main-content" id="vitessce-container">
+      <iframe id="vitessce-iframe"
+              src=""
+              style="width:100%; height:100%; border:none;"
+              allowfullscreen>
+      </iframe>
+      <div id="loading-msg" style="display:flex; align-items:center; justify-content:center; height:100%; color:#6c757d;">
+        <div style="text-align:center;">
+          <div style="font-size:2rem; margin-bottom:1rem;">🧬</div>
+          <div>Loading visualization...</div>
+          <div style="font-size:0.8rem; margin-top:0.5rem;">If the viewer doesn't load, check the browser console.</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Status Bar -->
+  <footer class="status-bar" id="statusBar">
+    <div class="status-item">
+      <span class="status-label">Cells:</span>
+      <span class="status-value">48,709</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Genes:</span>
+      <span class="status-value">21,839</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Cell Types:</span>
+      <span class="status-value">7</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Samples:</span>
+      <span class="status-value">4</span>
+    </div>
+    <div class="status-item" style="margin-left:auto;">
+      <span class="status-label">Data:</span>
+      <span class="status-value">Harmony-integrated · DecontX + scDblFinder QC</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/gene-search.js"></script>
+  <script src="js/dataset-tabs.js"></script>
+  <script src="js/custom-views.js"></script>
+
+  <script>
+    // ─── Sidebar Legends ────────────────────────────
+    const CELL_TYPES = {
+      "Neuron":          { color: "#4e79a7", count: "2,847" },
+      "Astrocyte":       { color: "#e15759", count: "4,231" },
+      "Oligodendrocyte": { color: "#76b7b2", count: "28,456" },
+      "OPC":             { color: "#59a14f", count: "4,891" },
+      "Microglia":       { color: "#edc949", count: "3,102" },
+      "Endothelial":     { color: "#af7aa1", count: "1,845" },
+      "Pericyte":        { color: "#ff9da7", count: "3,337" },
+    };
+
+    const CONDITIONS = {
+      "WT_F":  { color: "#4e79a7", label: "WT Female" },
+      "WT_M":  { color: "#59a14f", label: "WT Male" },
+      "KO_F":  { color: "#e15759", label: "IFNAR-KO Female" },
+      "KO_M":  { color: "#edc949", label: "IFNAR-KO Male" },
+    };
+
+    function buildLegend(containerId, items) {
+      const el = document.getElementById(containerId);
+      el.innerHTML = Object.entries(items).map(([name, info]) => `
+        <div class="legend-item" onclick="highlightCellType('${name}')">
+          <div class="legend-color" style="background:${info.color}"></div>
+          <span class="legend-label">${name}</span>
+          ${info.count ? `<span class="legend-count">${info.count}</span>` : ""}
+          ${info.label ? `<span style="font-size:0.75rem;color:#6c757d;">(${info.label})</span>` : ""}
+        </div>
+      `).join("");
+    }
+
+    buildLegend("cellTypeLegend", CELL_TYPES);
+    buildLegend("conditionLegend", CONDITIONS);
+
+    const m1aEl = document.getElementById("m1aLegend");
+    m1aEl.innerHTML = Object.entries({
+      "Writers": { genes: "Trmt10c, Trmt6, Trmt61a", color: "#59a14f" },
+      "Erasers": { genes: "Alkbh1, Alkbh3, Fto", color: "#e15759" },
+      "Readers": { genes: "Ythdc1, Ythdf1, Ythdf2, Ythdf3", color: "#4e79a7" },
+    }).map(([name, info]) => `
+      <div class="legend-item">
+        <div class="legend-color" style="background:${info.color}"></div>
+        <span class="legend-label"><strong>${name}</strong></span>
+        <span style="font-size:0.7rem;color:#6c757d;">${info.genes}</span>
+      </div>
+    `).join("");
+
+    // ─── Load Vitessce iframe ────────────────────────
+    function loadVitessce() {
+      const iframe = document.getElementById("vitessce-iframe");
+      const loading = document.getElementById("loading-msg");
+
+      // Read config URL from localStorage (set by preview.py)
+      const vitessceUrl = localStorage.getItem("vitessce_url");
+      if (vitessceUrl) {
+        iframe.src = vitessceUrl;
+        iframe.onload = () => {
+          loading.style.display = "none";
+        };
+      } else {
+        // Default: load h5vc.json from same directory
+        // This requires a local server with CORS support
+        iframe.src = "https://vitessce.io/#/?url=" + encodeURIComponent(
+          window.location.origin + window.location.pathname + "h5vc.json"
+        );
+        iframe.onload = () => {
+          loading.style.display = "none";
+        };
+        // Timeout fallback
+        setTimeout(() => { loading.style.display = "none"; }, 5000);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      createGeneSearch();
+      loadVitessce();
+      restoreFromHash();
+    });
+  </script>
+</body>
+</html>

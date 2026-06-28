@@ -1,0 +1,48 @@
+/* vitessce-overrides.css — Vitessce 组件样式覆写 */
+
+/* ─── 顶部 Vitessce 导航栏 ─── */
+.vitessce-top-level-component {
+  border-top: 4px solid var(--primary) !important;
+  font-family: inherit !important;
+}
+
+/* ─── 视图标题 ─── */
+.vitessce-view-title {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+  color: var(--primary) !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid #e9ecef !important;
+  padding-bottom: 0.4rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* ─── UMAP 散点图背景 ─── */
+.vitessce-scatter-plot-canvas,
+.vitessce-scatter-plot svg {
+  background: var(--umap-bg, #fafbfc) !important;
+}
+
+/* ─── 基因选择器 ─── */
+.vitessce-feature-selection,
+.vitessce-feature-selection input {
+  border: 2px solid var(--primary-light) !important;
+  border-radius: 8px !important;
+}
+
+/* ─── 状态栏 ─── */
+.vitessce-status-bar {
+  background: var(--surface) !important;
+  border-top: 1px solid #dee2e6 !important;
+  font-size: 0.8rem !important;
+}
+
+/* ─── 颜色映射调整 ─── */
+.vitessce-color-legend {
+  font-size: 0.8rem !important;
+}
+
+/* ─── 整体内边距调整 ─── */
+.vitessce-layout {
+  padding: 0 !important;
+}

@@ -1,0 +1,279 @@
+/* main.css — Ran_SCI 品牌样式 */
+
+/* ─── CSS Variables ─── */
+:root {
+  --primary: #1a3a5c;
+  --primary-light: #2d6a9f;
+  --accent: #e85d3f;
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --text: #212529;
+  --text-secondary: #6c757d;
+
+  --ct-neuron: #4e79a7;
+  --ct-astrocyte: #e15759;
+  --ct-oligo: #76b7b2;
+  --ct-opc: #59a14f;
+  --ct-microglia: #edc949;
+  --ct-endothelial: #af7aa1;
+  --ct-pericyte: #ff9da7;
+
+  --cond-wt-f: #4e79a7;
+  --cond-wt-m: #59a14f;
+  --cond-ko-f: #e15759;
+  --cond-ko-m: #edc949;
+}
+
+/* ─── Reset & Base ─── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ─── Header ─── */
+.site-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.site-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.site-header .subtitle {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-top: 0.25rem;
+}
+
+.site-header .meta {
+  font-size: 0.8rem;
+  opacity: 0.65;
+  margin-top: 0.5rem;
+}
+
+/* ─── Gene Search Bar ─── */
+.gene-search-container {
+  background: var(--surface);
+  border-bottom: 1px solid #dee2e6;
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.gene-search-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.gene-search-input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+  padding: 0.5rem 1rem;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.gene-search-input:focus {
+  border-color: var(--primary-light);
+}
+
+.gene-presets {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gene-preset-btn {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  background: var(--surface);
+  transition: all 0.2s;
+}
+
+.gene-preset-btn:hover {
+  background: var(--bg);
+}
+
+.gene-preset-btn.active {
+  color: white;
+  border-color: transparent;
+}
+
+.gene-preset-btn.writers.active { background: #59a14f; }
+.gene-preset-btn.erasers.active { background: #e15759; }
+.gene-preset-btn.readers.active { background: #4e79a7; }
+.gene-preset-btn.all-m1a.active { background: var(--primary); }
+
+/* ─── Main Layout ─── */
+.main-container {
+  display: flex;
+  height: calc(100vh - 140px);
+}
+
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--surface);
+  border-right: 1px solid #dee2e6;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.main-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Sidebar Legend ─── */
+.sidebar-section {
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #eee;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  margin: 0 -0.5rem;
+}
+
+.legend-item:hover {
+  background: var(--bg);
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  flex: 1;
+}
+
+.legend-count {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Footer / Status Bar ─── */
+.status-bar {
+  background: var(--surface);
+  border-top: 1px solid #dee2e6;
+  padding: 0.5rem 2rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.status-label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.status-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .sidebar {
+    width: 100%;
+    min-width: unset;
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+    max-height: 200px;
+  }
+  .site-header h1 { font-size: 1.3rem; }
+}
+
+/* ─── Autocomplete Dropdown ─── */
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.autocomplete-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.selected {
+  background: var(--bg);
+}
+
+.autocomplete-item .gene-category {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  color: white;
+}
+
+.autocomplete-item .gene-category.writer { background: #59a14f; }
+.autocomplete-item .gene-category.eraser { background: #e15759; }
+.autocomplete-item .gene-category.reader { background: #4e79a7; }
+.autocomplete-item .gene-category.marker  { background: #af7aa1; }

@@ -1,0 +1,24 @@
+# 数据文件 (已托管到 Zenodo)
+data/own/*.h5ad
+data/own/*.zarr
+data/own/*.mtx
+data/own/*.csv
+data/own/*.txt
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.env/
+
+# R 缓存
+.Rhistory
+.RData
+.Rproj.user/
+
+# 系统文件
+.DS_Store
+*.swp
+*.swo
+*~

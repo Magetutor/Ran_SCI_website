@@ -1,0 +1,8 @@
+vitessce==3.4.0
+scanpy
+anndata
+numpy
+pandas
+h5py
+zarr
+scipy
