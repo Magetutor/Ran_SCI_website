@@ -2,24 +2,15 @@
     "chunks": [
         12
     ],
-    "compressor": null,
+    "compressor": {
+        "id": "zlib",
+        "level": 1
+    },
     "dtype": "|O",
     "fill_value": 0,
     "filters": [
         {
-            "allow_nan": true,
-            "check_circular": true,
-            "encoding": "utf-8",
-            "ensure_ascii": true,
-            "id": "json2",
-            "indent": null,
-            "separators": [
-                ",",
-                ":"
-            ],
-            "skipkeys": false,
-            "sort_keys": true,
-            "strict": true
+            "id": "vlen-utf8"
         }
     ],
     "order": "C",
