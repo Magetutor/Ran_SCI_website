@@ -9,7 +9,7 @@
       "files": [
         {
           "fileType": "anndata.zarr",
-          "url": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.h5ad.zarr/",
+          "url": "https://raw.githubusercontent.com/Magetutor/Ran_SCI_website/data/own_data.zarr/",
           "options": {
             "obsSets": [
               {
