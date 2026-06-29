@@ -3,11 +3,8 @@
         240118
     ],
     "compressor": {
-        "blocksize": 0,
-        "clevel": 5,
-        "cname": "lz4",
-        "id": "blosc",
-        "shuffle": 1
+        "id": "zlib",
+        "level": 1
     },
     "dtype": "<f4",
     "fill_value": 0.0,
